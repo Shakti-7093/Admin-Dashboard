@@ -2,7 +2,29 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
   baseQuery: fetchBaseQuery({ baseUrl: process.env.REACT_APP_BASE_URL }),
-  mode: "no-cors",
+  baseQueryFn: async ({ baseUrl = process.env.REACT_APP_BASE_URL, ...rest }) => {
+    const fullUrl = baseUrl;
+
+    try {
+      const response = await fetch(fullUrl, {
+        ...rest,
+        headers: {
+          ...rest.headers,
+          // Add your custom headers here
+          'Access-Control-Allow-Origin': 'https://admin-dashboard-delta-teal.vercel.app',
+          // Add any other headers as needed
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      return response.json();
+    } catch (error) {
+      throw error;
+    }
+  },
   reducerPath: "adminApi",
   tagTypes: [
     "User",
