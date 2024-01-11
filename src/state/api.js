@@ -10,9 +10,8 @@ export const api = createApi({
         ...rest,
         headers: {
           ...rest.headers,
-          // Add your custom headers here
           'Access-Control-Allow-Origin': 'https://admin-dashboard-delta-teal.vercel.app',
-          // Add any other headers as needed
+          'mode': 'no-cors'
         },
       });
 
